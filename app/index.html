@@ -1,0 +1,180 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <title>My AngularJS App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.4.0/ui-bootstrap.min.js"></script>
+    <!--including clipboardJS library-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css"/>
+    <!--select styling-->
+    <link rel="stylesheet" href="my.css">
+    <script src="app.js"></script>
+
+</head>
+
+
+<body ng-app="myTestApp" ng-controller="menuCtrl">
+<h1>Table </h1>
+<form class="form-inline" role="search">
+    <div class="form-group">Search: <input type="text" class="form-control" ng-model='searchPhr' placeholder="search">
+    </div>
+</form>
+<br/>
+<div ng-controller="modalCtrl">
+    <button class="btn btn-default" ng-click='toggleModal()'>Add User</button>
+    <modal-dialog show='modalShown' width='600px' height='90%'> <!--here content for modal window-->
+        <h3>Add New User</h3>
+        <form class="form-horizontal" name="sendForm">
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control name" id="inputName" placeholder="Name" name="name" ng-model="name"  ng-pattern="nameReg" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">Username</label>
+                <div class="col-sm-10">
+                    <input type="text"  class="form-control" id="username"  name="username" placeholder="Username" ng-model='username' ng-pattern="nameReg" required>
+
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="email" ng-model="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="col-sm-2 control-label">Phone number</label>
+                <div class="col-sm-10">
+                    <input type="text"  name='phoneNmb' class="form-control" id="phone" placeholder="phone number" ng-model="phoneNmb" ng-pattern="phoneReg" >
+                    <p ng-show="sendForm.phoneNmb.$invalid ">Phone number example: (+91)-888-88-28508</png>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="website" class="col-sm-2 control-label">Website</label>
+                <div class="col-sm-10">
+                    <input type="text" name='website' class="form-control" id="website" placeholder="website" ng-model="website" ng-pattern="websiteReg" >
+                    <p ng-show="sendForm.website.$invalid">Example of the site: 'website.com'</p>
+                </div>
+            </div>
+            <hr>
+            <h5><strong>Address</strong></h5>
+            <div class="form-group">
+                <label for="address.city" class="col-sm-2 control-label">City</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="address.city" placeholder="City" ng-pattern="nameReg" ng-model="city">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address.street" class="col-sm-2 control-label" >Street</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="address.street" placeholder="Street" ng-pattern="nameReg" ng-model="street">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address.suite" class="col-sm-2 control-label">Suite</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="address.suite" placeholder="suite" ng-pattern="nameReg" ng-model="suite">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address.zipcode" class="col-sm-2 control-label">Zipcode</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="address.zipcode" placeholder="zipcode" ng-pattern="nameReg" ng-model="zipcode">
+                </div>
+            </div>
+            <hr>
+            <h5><strong>Company</strong></h5>
+            <div class="form-group">
+                <label for="company.name" class="col-sm-2 control-label">Company name</label>
+                <div class="col-sm-10">
+                    <input type="text" name="comName" class="form-control" id="company.name" placeholder="company name" ng-model="comName" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="company.catchPhrase" class="col-sm-2 control-label">Phrase</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="company.catchPhrase" placeholder="company phrase" ng-pattern="nameReg" ng-model="phrase">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="company.description" class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="company.description" placeholder="company description" ng-pattern="nameReg" ng-model="descr">
+                </div>
+            </div>
+            <button class="btn btn-default" ng-click='sendUser()' ng-disabled="sendForm.name.$invalid || sendForm.email.$invalid || sendForm.comName.$invalid || sendForm.username.$invalid">Save!</button>
+
+        </form><!--end of the modal window content-->
+
+    </modal-dialog>
+    <br/><br/>
+</div>
+<div >
+    <table ng-table="myTable" show-filter="true" class="table table-hover table-bordered">
+
+        <thead>
+        <td>#</td>
+        <td>
+            <button class="btn btn-default" ng-click="sortBy('name')">Name</button>
+            <span class="sortorder" ng-show="propertyName === 'name'" ng-class="{reverse: reverse}"></span></td>
+        <td>
+            <button class="btn btn-default" ng-click="sortBy('username')">Username</button>
+            <span class="sortorder" ng-show="propertyName === 'username'" ng-class="{reverse: reverse}"></span></td>
+        <td>
+            <button class="btn btn-default" ng-click="sortBy('email')">Email</button>
+            <span class="sortorder" ng-show="propertyName === 'email'" ng-class="{reverse: reverse}"></span></td>
+        <td>
+            <button class='btn btn-default' ng-click="sortBy('phone')">Phone Number</button>
+            <span class="sortorder" ng-show="propertyName === 'phone'" ng-class="{reverse: reverse}"></span></td>
+        <td>
+            <button class='btn btn-default' ng-click="sortBy('address.street')">Address(sort by street)</button>
+            <span class="sortorder" ng-show="propertyName === 'address.street'" ng-class="{reverse: reverse}"></span>
+        </td>
+        <td>
+            <button class='btn btn-default' ng-click="sortBy('website')">WebSite</button>
+            <span class="sortorder" ng-show="propertyName === 'website'" ng-class="{reverse: reverse}"></span>
+        </td>
+        <td>
+            <button class='btn btn-default' ng-click="sortBy('company.name')">Company(sort by name)</button>
+            <span class="sortorder" ng-show="propertyName === 'company.name'" ng-class="{reverse: reverse}"></span>
+        </td>
+
+
+        </thead>
+        <tbody ng-cloak ng-repeat="data in users  | orderBy:propertyName:reverse | filter:searchPhr">
+        <td>{{data.id }}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.username}}</td>
+        <td><p id="User{{data.id}}">{{data.email}}</p> &nbsp;&nbsp;
+            <button class="btn-clipboard btn btn-default" data-clipboard-target="#User{{data.id}}">Copy</button>
+        </td>
+        <td>{{data.phone}}</td>
+        <td>City: {{data.address.city}}<br/>
+            Street: {{data.address.street}}<br/>
+            Suite: {{data.address.suite}}<br/>
+            Zipcode: {{data.address.zipcode}}
+        </td>
+
+        <td><a href="{{data.website}}">{{data.website}}</a></td>
+        <td>Name: {{data.company.name}}<br/>
+            Catch Phrase: {{data.company.catchPhrase}}<br/>
+            Description: {{data.company.bs}}<br/>
+        </td>
+        </tbody>
+
+
+    </table>
+
+
+</div>
+<script>
+    new Clipboard('.btn-clipboard'); // clipboard button init
+</script>
+</body>
+</html>
