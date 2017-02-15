@@ -10,20 +10,20 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css"/>
     <!--select styling-->
-    <link rel="stylesheet" href="my.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 
 <body ng-app="myTestApp" ng-controller="menuCtrl">
-<h1 class="col-md-6 col-md-offset-5">Users Table</h1><br>
+<h1 class="text-center">Users Table</h1><br>
 <form class="form-inline col-md-2  " role="search">
     <div class="h3 form-group">Search: <input type="text" class="form-control" ng-model='searchPhr' placeholder="search">
     </div>
 </form>
 <br/>
 <div ng-controller="modalCtrl"><!--content of popup down-->
-    <div class="col-md-3 col-md-offset-1"><button class="h3 btn btn-default " ng-click='toggleModal()'>Add User</button></div>
+    <div class="margin-bottom-5"><button class="btn btn-default " ng-click='toggleModal()'>Add User</button></div>
     <modal-dialog show='modalShown' width='40%' height='90%'> <!--here content for modal window-->
        <h3>Add New User</h3>
         <form class="form-horizontal" name="sendForm">
@@ -174,6 +174,8 @@
 
 
 </div>
+<h4 class="text-center">Made by Makov Yuriy</h4>
+<p>Data from: <a href="https://jsonplaceholder.typicode.com/users">https://jsonplaceholder.typicode.com/users</a></p>
 <script>
     new Clipboard('.btn-clipboard'); // clipboard button init
 </script>
